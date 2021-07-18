@@ -1,12 +1,12 @@
 // Core
-import React from "react";
+import React from 'react';
 
 // Redux
-import { useSelector, useDispatch } from "react-redux";
-import { getTracks, selectTrack } from "./state/reducer/trackReducer";
+import { useSelector, useDispatch } from 'react-redux';
+import { getTracks, selectTrack } from './state/reducer/trackReducer';
 
 // Component
-import Track from "./Track";
+import Track from './Track';
 
 export default function SearchResult() {
   const dispatch = useDispatch();
