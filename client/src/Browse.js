@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Dashboard({ code }) {
+export default function Browse({ code }) {
   const styles = useStyles();
   const hasSelectedTrack = useSelector(getSelectedTrack);
   const authToken = useAuth(code);
