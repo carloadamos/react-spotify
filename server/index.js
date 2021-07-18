@@ -60,7 +60,7 @@ app.post('/refreshToken', (req, res) => {
 app.get('/getCategories', (req, res) => {
   spotifyApi
     .getCategories({
-      limit: 5,
+      limit: 20,
       offset: 0,
       country: 'PH',
       locale: 'en_PH',
@@ -92,7 +92,7 @@ app.post('/getPlaylistsForCategory', (req, res) => {
       return spotifyApi
         .getPlaylistTracks(ids[0], {
           offset: 1,
-          limit: 5,
+          limit: 20,
           fields: 'items',
         })
         .then((data) => data.body.items)
