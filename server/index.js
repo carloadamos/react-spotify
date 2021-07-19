@@ -73,38 +73,36 @@ app.get('/getCategories', (req, res) => {
     });
 });
 
-app.post('/getPlaylistsForCategory', (req, res) => {
+app.post('/getPlaylistsForCategory', async (req, res) => {
   const id = req.body.id;
+  const playlists = await getPlaylists(id);
 
-  spotifyApi
+  res.send(playlists);
+});
+
+function getPlaylists(id) {
+  return spotifyApi
     .getPlaylistsForCategory(id, {
       country: 'PH',
       locale: 'en_PH',
     })
     .then((data) => {
-      const ids = data.body.playlists.items.map((item) => {
-        return item.id;
+      const playlist = data.body.playlists.items.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          imageUrl: item.images[0].url,
+          totalTracks: item.tracks.total ?? 0,
+        };
       });
 
-      return ids;
+      return playlist;
     })
-    .then((ids) => {
-      return spotifyApi
-        .getPlaylistTracks(ids[0], {
-          offset: 1,
-          limit: 20,
-          fields: 'items',
-        })
-        .then((data) => data.body.items)
-        .catch((err) => {
-          console.log('err', err);
-        });
-    })
-    .then((data) => res.send(data))
     .catch((err) => {
       console.log('Something went wrong!', err);
     });
-});
+}
 
 app.listen(PORT, () => {
   console.log(`Listening at localhost ${PORT}`);

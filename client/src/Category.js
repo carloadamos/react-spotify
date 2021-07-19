@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 
+import { useDispatch } from 'react-redux';
+import { setPlaylists } from './state/reducer/playlistReducer';
+
 export default function Category({ category }) {
+  const dispatch = useDispatch();
   const handleClick = (id) => {
     axios
       .post('http://localhost:3001/getPlaylistsForCategory', {
@@ -9,7 +13,7 @@ export default function Category({ category }) {
       })
       .then((response) => {
         console.log(response.data);
-        // setSelectedCategory(response.data.items);
+        dispatch(setPlaylists(response.data));
       })
       .catch((err) => console.log(err));
   };

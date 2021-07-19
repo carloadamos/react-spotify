@@ -41,13 +41,15 @@ export default function Browse({ code }) {
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
+    if (!authToken) return;
+
     axios
       .get('http://localhost:3001/getCategories')
       .then((response) => {
         setCategories(response.data.items);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [authToken]);
 
   return (
     <Box className={styles.root} mx={5}>
