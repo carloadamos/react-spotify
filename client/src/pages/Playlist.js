@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import PlaylistCard from '../components/PlaylistCard';
 
+// import { useLocation } from 'react-router-dom';
+
 const useStyles = makeStyles({
   root: {
     background: '#121212',
@@ -25,6 +27,8 @@ const useStyles = makeStyles({
 export default function Playlist() {
   const styles = useStyles();
   const playlists = useSelector(getPlaylists);
+  // const location = useLocation();
+  // const { playlistId } = location.state ?? {};
 
   return (
     <Box className={styles.root}>
@@ -33,7 +37,7 @@ export default function Playlist() {
       </Typography>
       <Box className={styles.grid}>
         {playlists.map((playlist) => {
-          return <PlaylistCard playlist={playlist} />;
+          return <PlaylistCard key={playlist.id} playlist={playlist} />;
         })}
       </Box>
     </Box>

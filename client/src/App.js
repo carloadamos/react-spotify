@@ -13,7 +13,6 @@ function App() {
     setCode(new URLSearchParams(window.location.search).get('code'));
   }, [code]);
 
-  // return ;
   return (
     <Router>
       <Route

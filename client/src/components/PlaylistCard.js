@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
 
+import { useHistory } from 'react-router-dom';
+
 const useStyles = makeStyles({
   root: {
     alignItems: 'center',
@@ -43,9 +45,18 @@ const useStyles = makeStyles({
 
 export default function PlaylistCard({ playlist }) {
   const styles = useStyles();
+  const history = useHistory();
+
+  const handleClick = (id) => {
+    history.push('/playlist', { playlistId: id });
+  };
 
   return (
-    <Box className={styles.root} my={1}>
+    <Box
+      className={styles.root}
+      my={1}
+      onClick={() => handleClick(playlist.id)}
+    >
       <Box className={styles.imageWrapper}>
         <img
           src={playlist.imageUrl}

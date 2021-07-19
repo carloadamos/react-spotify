@@ -15,8 +15,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import useAuth from './useAuth';
 
 // Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedTrack } from './state/reducer/trackReducer';
+import { getCategories, setCategories } from './state/reducer/categoryReducer';
 
 // Utilities
 import axios from 'axios';
@@ -35,9 +36,11 @@ const useStyles = makeStyles({
 
 export default function Browse({ code }) {
   const styles = useStyles();
-  const hasSelectedTrack = useSelector(getSelectedTrack);
   const authToken = useAuth(code);
-  const [categories, setCategories] = useState([]);
+
+  const dispatch = useDispatch();
+  const hasSelectedTrack = useSelector(getSelectedTrack);
+  const categories = useSelector(getCategories);
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
@@ -46,10 +49,10 @@ export default function Browse({ code }) {
     axios
       .get('http://localhost:3001/getCategories')
       .then((response) => {
-        setCategories(response.data.items);
+        dispatch(setCategories(response.data.items));
       })
       .catch((err) => console.log(err));
-  }, [authToken]);
+  }, [authToken, dispatch]);
 
   return (
     <Box className={styles.root} mx={5}>
@@ -60,6 +63,7 @@ export default function Browse({ code }) {
         {searching ? (
           <SearchResult />
         ) : (
+          categories &&
           categories.map((category) => {
             return <Category key={category.id} category={category} />;
           })
