@@ -1,0 +1,24 @@
+{
+  "name": "react-spotify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd client && npm run start\" \"cd server && npm run dev\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carloadamos/react-spotify.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carloadamos/react-spotify/issues"
+  },
+  "homepage": "https://github.com/carloadamos/react-spotify#readme",
+  "devDependencies": {
+    "concurrently": "^6.2.0"
+  }
+}

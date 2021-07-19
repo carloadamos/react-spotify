@@ -4,16 +4,19 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setPlaylists } from './state/reducer/playlistReducer';
 
+import { useHistory } from 'react-router-dom';
+
 export default function Category({ category }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const handleClick = (id) => {
     axios
       .post('http://localhost:3001/getPlaylistsForCategory', {
         id,
       })
       .then((response) => {
-        console.log(response.data);
         dispatch(setPlaylists(response.data));
+        history.push('/playlist');
       })
       .catch((err) => console.log(err));
   };
