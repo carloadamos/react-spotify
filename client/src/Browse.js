@@ -11,13 +11,11 @@ import Category from './Category';
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-// Custom hook
-import useAuth from './useAuth';
-
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { getSelectedTrack } from './state/reducer/trackReducer';
 import { getCategories, setCategories } from './state/reducer/categoryReducer';
+import { setToken, getToken } from './state/reducer/tokenReducer';
+import { getSelectedTrack } from './state/reducer/trackReducer';
 
 // Utilities
 import axios from 'axios';
@@ -32,19 +30,29 @@ const useStyles = makeStyles({
     flex: 1,
     overflowY: 'auto',
   },
+  categories: {
+    background: '#121212',
+    flex: 1,
+    gap: '10px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    overflowY: 'auto',
+  },
 });
 
-export default function Browse({ code }) {
-  const styles = useStyles();
-  const authToken = useAuth(code);
-
+export default function Browse() {
   const dispatch = useDispatch();
+  const styles = useStyles();
+
+  const authToken = useSelector(getToken);
   const hasSelectedTrack = useSelector(getSelectedTrack);
   const categories = useSelector(getCategories);
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     if (!authToken) return;
+
+    dispatch(setToken(authToken));
 
     axios
       .get('http://localhost:3001/getCategories')
@@ -57,9 +65,9 @@ export default function Browse({ code }) {
   return (
     <Box className={styles.root} mx={5}>
       <Box>
-        <SearchForm handleSearch={() => setSearching(true)} />
+        <SearchForm handleSearch={setSearching} />
       </Box>
-      <Box className={styles.body}>
+      <Box className={searching ? styles.body : styles.categories}>
         {searching ? (
           <SearchResult />
         ) : (

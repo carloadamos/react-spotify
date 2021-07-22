@@ -80,6 +80,23 @@ app.post('/getPlaylistsForCategory', async (req, res) => {
   res.send(playlists);
 });
 
+app.post('/getPlaylistTracks', async (req, res) => {
+  const playlistId = req.body.playlistId;
+
+  spotifyApi
+    .getPlaylistTracks(playlistId, {
+      offset: 0,
+      limit: 20,
+      field: 'items',
+    })
+    .then((data) => {
+      res.send({ tracks: data.body.items });
+    })
+    .catch((error) => {
+      console.log('error', error);
+    });
+});
+
 function getPlaylists(id) {
   return spotifyApi
     .getPlaylistsForCategory(id, {

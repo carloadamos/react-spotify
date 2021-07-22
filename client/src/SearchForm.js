@@ -12,12 +12,21 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setTracks } from './state/reducer/trackReducer';
 
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  searchField: {
+    backgroundColor: '#FFF',
+  },
+});
+
 export default function SearchForm({ handleSearch }) {
+  const styles = useStyles();
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
 
   const handleOnChange = (e) => {
-    handleSearch();
+    handleSearch(e.target.value ? true : false);
     setSearch(e.target.value);
   };
 
@@ -48,6 +57,7 @@ export default function SearchForm({ handleSearch }) {
   return (
     <FormControl fullWidth={true}>
       <TextField
+        className={styles.searchField}
         placeholder='Artists, songs or podcasts'
         variant='outlined'
         onChange={(e) => handleOnChange(e)}

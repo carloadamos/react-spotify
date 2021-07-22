@@ -48,7 +48,7 @@ export default function PlaylistCard({ playlist }) {
   const history = useHistory();
 
   const handleClick = (id) => {
-    history.push('/playlist', { playlistId: id });
+    history.push('/playlistTracks', { playlistId: id });
   };
 
   return (

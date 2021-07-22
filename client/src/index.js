@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { Provider } from 'react-redux';
-import store from './store';
+import store from './state/store';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 ReactDOM.render(
