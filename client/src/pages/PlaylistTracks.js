@@ -20,7 +20,11 @@ import Player from '../Player';
 const useStyles = makeStyles({
   root: {
     background: '#121212',
-    padding: '10px',
+  },
+  title: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    paddingTop: '15px',
   },
 });
 
@@ -51,7 +55,6 @@ export default function PlaylistTracks() {
           };
         });
 
-        // console.log('setTrack')
         setTracks(trackResult);
         dispatch(clearSelectedTrack());
       })
@@ -59,22 +62,20 @@ export default function PlaylistTracks() {
   }, [playlistId, dispatch]);
 
   return (
-    <Box className={styles.root}>
+    <Box p={2} className={styles.root}>
       <Typography className={styles.title}>Tracks</Typography>
-      <Box className={styles.tracks}>
-        {tracks && tracks.length
-          ? tracks.map((track) => {
-              console.log('track', track);
-              return (
-                <Track
-                  key={track.uri}
-                  track={track}
-                  handleClick={() => dispatch(selectTrack(track.uri))}
-                />
-              );
-            })
-          : 'No tracks found'}
-      </Box>
+      {tracks && tracks.length
+        ? tracks.map((track) => {
+            console.log('track', track);
+            return (
+              <Track
+                key={track.uri}
+                track={track}
+                handleClick={() => dispatch(selectTrack(track.uri))}
+              />
+            );
+          })
+        : 'No tracks found'}
       <Box>{hasSelectedTrack.length !== 0 && <Player token={authToken} />}</Box>
     </Box>
   );

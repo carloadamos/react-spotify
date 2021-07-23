@@ -16,6 +16,9 @@ const useStyles = makeStyles({
     cursor: 'pointer',
     width: '200px',
     padding: '15px',
+    '&:hover': {
+      background: '#282828',
+    },
   },
   imageWrapper: {
     height: '170px',
