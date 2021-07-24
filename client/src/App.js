@@ -4,10 +4,12 @@ import Browse from './Browse';
 import Login from './Login';
 import Playlist from './pages/Playlist';
 import PlaylistTracks from './pages/PlaylistTracks';
+import SideNavigation from './components/SideNavigation';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { Box } from '@material-ui/core';
 
 import { setCode, getCode } from './state/reducer/codeReducer';
 import { setToken } from './state/reducer/tokenReducer';
@@ -19,6 +21,15 @@ const useStyles = makeStyles({
   root: {
     backgroundColor: '#121212',
     height: '100vh',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  navigation: {
+    width: '240px',
+    minWidth: '240px',
+  },
+  content: {
+    flex: 1,
   },
 });
 
@@ -43,13 +54,22 @@ function App() {
   }, [code, dispatch]);
 
   return (
-    <div className={styles.root}>
-      <Router>
-        <Route exact path='/' render={() => (code ? <Browse /> : <Login />)} />
-        <Route exact path='/playlist' component={Playlist} />
-        <Route exact path='/playlistTracks' component={PlaylistTracks} />
-      </Router>
-    </div>
+    <Box className={styles.root}>
+      <Box className={styles.navigation}>
+        <SideNavigation />
+      </Box>
+      <Box className={styles.content}>
+        <Router>
+          <Route
+            exact
+            path='/'
+            render={() => (code ? <Browse /> : <Login />)}
+          />
+          <Route exact path='/playlist' component={Playlist} />
+          <Route exact path='/playlistTracks' component={PlaylistTracks} />
+        </Router>
+      </Box>
+    </Box>
   );
 }
 

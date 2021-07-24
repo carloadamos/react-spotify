@@ -54,7 +54,7 @@ export default function Category({ category }) {
       })
       .then((response) => {
         dispatch(setPlaylists(response.data));
-        history.push('/playlist');
+        history.push('/playlist', { category });
       })
       .catch((err) => console.log(err));
   };

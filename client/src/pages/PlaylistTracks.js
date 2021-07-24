@@ -21,10 +21,42 @@ const useStyles = makeStyles({
   root: {
     background: '#121212',
   },
+  header: {
+    background: '#1DB954',
+    display: 'flex',
+    flexDirection: 'row',
+    padding: '10px',
+  },
+  headerRight: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+  },
+  headerLeft: {
+    marginRight: '20px',
+  },
+  playlistImage: {
+    height: '230px',
+    width: '230px',
+  },
+  playlist: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
   title: {
     color: '#FFFFFF',
     fontWeight: 'bold',
-    paddingTop: '15px',
+  },
+  tracks: {
+    padding: '10px',
+  },
+  subTitle: {
+    color: '#FFFFFF',
+    opacity: 0.9,
+  },
+  owner: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
 });
 
@@ -32,15 +64,17 @@ export default function PlaylistTracks() {
   const dispatch = useDispatch();
   const styles = useStyles();
   const location = useLocation();
-  const { playlistId } = location.state ?? {};
-  const [tracks, setTracks] = useState([]);
   const authToken = useSelector(getToken);
-
   const hasSelectedTrack = useSelector(getSelectedTrack);
+
+  const [tracks, setTracks] = useState([]);
+  const { playlist } = location.state ?? {};
 
   useEffect(() => {
     axios
-      .post('http://localhost:3001/getPlaylistTracks', { playlistId })
+      .post('http://localhost:3001/getPlaylistTracks', {
+        playlistId: playlist.id,
+      })
       .then(({ data }) => {
         const trackResult = data.tracks.map(({ track }) => {
           return {
@@ -59,24 +93,49 @@ export default function PlaylistTracks() {
         dispatch(clearSelectedTrack());
       })
       .catch((error) => console.log('error', error));
-  }, [playlistId, dispatch]);
+  }, [playlist, dispatch]);
 
   return (
-    <Box p={2} className={styles.root}>
-      <Typography className={styles.title}>Tracks</Typography>
-      {tracks && tracks.length
-        ? tracks.map((track) => {
-            console.log('track', track);
-            return (
-              <Track
-                key={track.uri}
-                track={track}
-                handleClick={() => dispatch(selectTrack(track.uri))}
-              />
-            );
-          })
-        : 'No tracks found'}
-      <Box>{hasSelectedTrack.length !== 0 && <Player token={authToken} />}</Box>
+    <Box className={styles.root}>
+      <Box className={styles.header}>
+        <Box className={styles.headerLeft}>
+          <img
+            className={styles.playlistImage}
+            src={playlist.imageUrl}
+            alt={playlist.name}
+          />
+        </Box>
+        <Box className={styles.headerRight}>
+          <Typography variant='subtitle1' className={styles.playlist}>
+            PLAYLIST
+          </Typography>
+          <Typography variant='h1' className={styles.title}>
+            {playlist.name}
+          </Typography>
+          <Typography variant='subtitle2' className={styles.subTitle}>
+            {playlist.description}
+          </Typography>
+          <Typography variant='subtitle1' className={styles.owner}>
+            {playlist.owner.display_name}
+          </Typography>
+        </Box>
+      </Box>
+      <Box className={styles.tracks}>
+        {tracks && tracks.length
+          ? tracks.map((track) => {
+              return (
+                <Track
+                  key={track.uri}
+                  track={track}
+                  handleClick={() => dispatch(selectTrack(track.uri))}
+                />
+              );
+            })
+          : 'No tracks found'}
+        <Box>
+          {hasSelectedTrack.length !== 0 && <Player token={authToken} />}
+        </Box>
+      </Box>
     </Box>
   );
 }

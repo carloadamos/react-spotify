@@ -47,15 +47,15 @@ export default function PlaylistCard({ playlist }) {
   const styles = useStyles();
   const history = useHistory();
 
-  const handleClick = (id) => {
-    history.push('/playlistTracks', { playlistId: id });
+  const handleClick = () => {
+    history.push('/playlistTracks', { playlist });
   };
 
   return (
     <Box
       className={styles.root}
       my={1}
-      onClick={() => handleClick(playlist.id)}
+      onClick={() => handleClick()}
     >
       <Box className={styles.imageWrapper}>
         <img

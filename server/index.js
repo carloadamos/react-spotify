@@ -110,6 +110,7 @@ function getPlaylists(id) {
           name: item.name,
           description: item.description,
           imageUrl: item.images[0].url,
+          owner: item.owner,
           totalTracks: item.tracks.total ?? 0,
         };
       });
