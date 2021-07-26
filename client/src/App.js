@@ -12,7 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 
 import { setCode, getCode } from './state/reducer/codeReducer';
-import { setToken } from './state/reducer/tokenReducer';
+import { setToken, getToken } from './state/reducer/tokenReducer';
+import { setUser } from './state/reducer/userReducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 import axios from 'axios';
@@ -37,6 +38,7 @@ function App() {
   const dispatch = useDispatch();
   const styles = useStyles();
   const code = useSelector(getCode);
+  const token = useSelector(getToken);
 
   useEffect(() => {
     dispatch(setCode(new URLSearchParams(window.location.search).get('code')));
@@ -52,6 +54,17 @@ function App() {
       })
       .finally(() => window.history.pushState({}, null, '/'));
   }, [code, dispatch]);
+
+  useEffect(() => {
+    axios
+      .post('http://localhost:3001/getMe')
+      .then((res) => {
+        dispatch(setUser(res.data));
+      })
+      .catch((err) => {
+        console.log('error', err);
+      });
+  }, [token, dispatch]);
 
   return (
     <Box className={styles.root}>
