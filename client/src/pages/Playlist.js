@@ -31,7 +31,6 @@ export default function Playlist() {
   const playlists = useSelector(getPlaylists);
   const location = useLocation();
   const { category } = location.state ?? {};
-  console.log('category', category);
 
   return (
     <Box className={styles.root}>

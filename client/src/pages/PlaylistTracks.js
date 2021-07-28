@@ -109,7 +109,7 @@ export default function PlaylistTracks() {
           <Typography variant='subtitle1' className={styles.playlist}>
             PLAYLIST
           </Typography>
-          <Typography variant='h1' className={styles.title}>
+          <Typography variant='h3' className={styles.title}>
             {playlist.name}
           </Typography>
           <Typography variant='subtitle2' className={styles.subTitle}>

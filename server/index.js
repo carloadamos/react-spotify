@@ -108,6 +108,30 @@ app.post('/getPlaylistTracks', async (req, res) => {
     });
 });
 
+app.post('/getUserPlaylists', async (req, res) => {
+  const { userId } = req.body;
+
+  spotifyApi
+    .getUserPlaylists(userId)
+    .then((data) => {
+      const playlist = data.body.items.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          imageUrl: item.images[0] ? item.images[0].url : '',
+          owner: item.owner,
+          totalTracks: item.tracks.total ?? 0,
+        };
+      });
+
+      res.send(playlist);
+    })
+    .catch((error) => {
+      console.log('error', error);
+    });
+});
+
 function getPlaylists(id) {
   return spotifyApi
     .getPlaylistsForCategory(id, {

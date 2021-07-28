@@ -63,7 +63,7 @@ export default function Browse() {
   }, [authToken, dispatch]);
 
   return (
-    <Box className={styles.root} mx={5}>
+    <Box className={styles.root}>
       <Box>
         <SearchForm handleSearch={setSearching} />
       </Box>

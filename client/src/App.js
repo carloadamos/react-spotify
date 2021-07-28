@@ -26,8 +26,8 @@ const useStyles = makeStyles({
     flexDirection: 'row',
   },
   navigation: {
-    width: '240px',
     minWidth: '240px',
+    width: '240px',
   },
   content: {
     flex: 1,
@@ -70,22 +70,20 @@ function App() {
       });
   }, [token, dispatch]);
 
-  return (
+  return !code ? (
+    <Login />
+  ) : (
     <Box className={styles.root}>
-      <Box className={styles.navigation}>
-        <SideNavigation />
-      </Box>
-      <Box className={styles.content}>
-        <Router>
-          <Route
-            exact
-            path='/'
-            render={() => (code ? <Browse /> : <Login />)}
-          />
+      <Router>
+        <Box className={styles.navigation}>
+          <SideNavigation />
+        </Box>
+        <Box className={styles.content}>
+          <Route exact path='/' component={Browse} />
           <Route exact path='/playlist' component={Playlist} />
           <Route exact path='/playlistTracks' component={PlaylistTracks} />
-        </Router>
-      </Box>
+        </Box>
+      </Router>
     </Box>
   );
 }
