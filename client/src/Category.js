@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
   root: {
     backgroundColor: '#181818',
+    borderRadius: '5px',
     cursor: 'pointer',
     width: '200px',
     padding: '15px',
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
     },
   },
   imageWrapper: {
+    borderRadius: '5px',
     height: '170px',
     width: '170px',
     position: 'relative',
