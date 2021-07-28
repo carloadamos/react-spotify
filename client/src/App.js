@@ -43,6 +43,8 @@ function App() {
   useEffect(() => {
     dispatch(setCode(new URLSearchParams(window.location.search).get('code')));
 
+    if (!code) return;
+
     axios
       .post('http://localhost:3001/login', { code })
       .then((res) => {
@@ -56,6 +58,8 @@ function App() {
   }, [code, dispatch]);
 
   useEffect(() => {
+    if (!token) return;
+
     axios
       .post('http://localhost:3001/getMe')
       .then((res) => {

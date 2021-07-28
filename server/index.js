@@ -24,14 +24,13 @@ app.post('/login', (req, res) => {
   spotifyApi
     .authorizationCodeGrant(code)
     .then((data) => {
-      console.log('data', data);
       spotifyApi.setAccessToken(data.body['access_token']);
       spotifyApi.setRefreshToken(data.body['refresh_token']);
 
       res.send({ token: data.body['access_token'] });
     })
     .catch((err) => {
-      console.log('Something went wrong!', err);
+      console.log('Something went wrong! /login', err);
     });
 });
 
@@ -39,11 +38,10 @@ app.post('/getMe', (req, res) => {
   spotifyApi
     .getMe()
     .then((data) => {
-      console.log('data', data.body);
       res.send(data.body);
     })
     .catch((err) => {
-      console.log('Something went wrong!', err);
+      console.log('Something went wrong! /getMe', err);
     });
 });
 
