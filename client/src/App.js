@@ -28,9 +28,13 @@ const useStyles = makeStyles({
   navigation: {
     minWidth: '240px',
     width: '240px',
+    maxHeight: '100%',
   },
   content: {
     flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
   },
 });
 

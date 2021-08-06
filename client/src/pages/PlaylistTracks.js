@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
-
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,6 +19,9 @@ import Player from '../Player';
 const useStyles = makeStyles({
   root: {
     background: '#121212',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
   },
   header: {
     background: '#1DB954',
@@ -36,8 +38,8 @@ const useStyles = makeStyles({
     marginRight: '20px',
   },
   playlistImage: {
-    height: '230px',
-    width: '230px',
+    height: '180px',
+    width: '180px',
   },
   playlist: {
     color: '#FFF',
@@ -49,6 +51,8 @@ const useStyles = makeStyles({
   },
   tracks: {
     padding: '10px',
+    flex: 1,
+    overflowY: 'auto',
   },
   subTitle: {
     color: '#FFFFFF',
@@ -57,6 +61,9 @@ const useStyles = makeStyles({
   owner: {
     color: '#FFFFFF',
     fontWeight: 'bold',
+  },
+  table: {
+    minWidth: 700,
   },
 });
 
@@ -69,6 +76,13 @@ export default function PlaylistTracks() {
 
   const [tracks, setTracks] = useState([]);
   const { playlist } = location.state ?? {};
+
+  const convertDuration = (millis) => {
+    const minutes = Math.floor(millis / 60000);
+    const seconds = ((millis % 60000) / 1000).toFixed(0);
+
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+  };
 
   useEffect(() => {
     axios
@@ -86,6 +100,8 @@ export default function PlaylistTracks() {
 
               return smallest;
             }, track.album.images[1]).url,
+            album: track.album,
+            duration: convertDuration(track.duration_ms),
           };
         });
 
@@ -122,9 +138,10 @@ export default function PlaylistTracks() {
       </Box>
       <Box className={styles.tracks}>
         {tracks && tracks.length
-          ? tracks.map((track) => {
+          ? tracks.map((track, index) => {
               return (
                 <Track
+                  count={index + 1}
                   key={track.uri}
                   track={track}
                   handleClick={() => dispatch(selectTrack(track.uri))}

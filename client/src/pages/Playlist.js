@@ -12,10 +12,14 @@ import PlaylistCard from '../components/PlaylistCard';
 const useStyles = makeStyles({
   root: {
     background: '#121212',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
   }, 
   grid: {
     display: 'flex',
     flexWrap: 'wrap',
+    overflowY: 'auto',
   },
   header: {
     background: '#1DB954'
