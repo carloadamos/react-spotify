@@ -43,7 +43,6 @@ const useStyles = makeStyles({
 export default function Track({ track, handleClick, count }) {
   const styles = useStyles();
 
-  console.log('track', track);
   return (
     <Box my={2} className={styles.root} onClick={() => handleClick()}>
       <Box className={styles.count}>

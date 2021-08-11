@@ -8,13 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   clearSelectedTrack,
   getSelectedTrack,
-  selectTrack,
 } from '../state/reducer/trackReducer';
 import { getToken } from '../state/reducer/tokenReducer';
 
 import axios from 'axios';
-import Track from '../Track';
 import Player from '../Player';
+
+import { useTable } from 'react-table';
 
 const useStyles = makeStyles({
   root: {
@@ -73,16 +73,42 @@ export default function PlaylistTracks() {
   const location = useLocation();
   const authToken = useSelector(getToken);
   const hasSelectedTrack = useSelector(getSelectedTrack);
-
   const [tracks, setTracks] = useState([]);
   const { playlist } = location.state ?? {};
-
   const convertDuration = (millis) => {
     const minutes = Math.floor(millis / 60000);
     const seconds = ((millis % 60000) / 1000).toFixed(0);
 
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
   };
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: '#',
+        accessor: 'id',
+      },
+      {
+        Header: 'Title',
+        accessor: 'title',
+      },
+      {
+        Header: 'Artist',
+        accessor: 'artist',
+      },
+      {
+        Header: 'Album',
+        accessor: 'album.name',
+      },
+      {
+        Header: 'Duration',
+        accessor: 'duration',
+      },
+    ],
+    []
+  );
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data: tracks });
 
   useEffect(() => {
     axios
@@ -90,8 +116,9 @@ export default function PlaylistTracks() {
         playlistId: playlist.id,
       })
       .then(({ data }) => {
-        const trackResult = data.tracks.map(({ track }) => {
+        const trackResult = data.tracks.map(({ track }, index) => {
           return {
+            id: (index += 1),
             artist: track.artists[0].name,
             title: track.name,
             uri: track.uri,
@@ -137,18 +164,49 @@ export default function PlaylistTracks() {
         </Box>
       </Box>
       <Box className={styles.tracks}>
-        {tracks && tracks.length
-          ? tracks.map((track, index) => {
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps()}
+                    style={{
+                      background: '#121212',
+                      color: '#FFF',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {column.render('Header')}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
               return (
-                <Track
-                  count={index + 1}
-                  key={track.uri}
-                  track={track}
-                  handleClick={() => dispatch(selectTrack(track.uri))}
-                />
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td
+                        {...cell.getCellProps()}
+                        style={{
+                          padding: '10px',
+                          background: '#121212',
+                          color: '#FFF',
+                        }}
+                      >
+                        {cell.render('Cell')}
+                      </td>
+                    );
+                  })}
+                </tr>
               );
-            })
-          : 'No tracks found'}
+            })}
+          </tbody>
+        </table>
         <Box>
           {hasSelectedTrack.length !== 0 && <Player token={authToken} />}
         </Box>
