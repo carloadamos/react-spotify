@@ -63,7 +63,29 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
   },
   table: {
-    minWidth: 700,
+    borderCollapse: 'collapse',
+  },
+  row: {
+    '&:hover': {
+      background: '#121212',
+      '& > *': {
+        background: '#282828',
+      },
+    },
+  },
+  tableDefinition: {
+    padding: '10px',
+    background: '#121212',
+    color: '#FFF',
+    gap: 0,
+    '&:first-child': {
+      borderTopLeftRadius: '5px',
+      borderBottomLeftRadius: '5px',
+    },
+    '&:last-child': {
+      borderTopRightRadius: '5px',
+      borderBottomRightRadius: '5px',
+    },
   },
 });
 
@@ -164,7 +186,7 @@ export default function PlaylistTracks() {
         </Box>
       </Box>
       <Box className={styles.tracks}>
-        <table {...getTableProps()}>
+        <table className={styles.table} {...getTableProps()}>
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -175,6 +197,8 @@ export default function PlaylistTracks() {
                       background: '#121212',
                       color: '#FFF',
                       fontWeight: 'bold',
+                      padding: '10px',
+                      textAlign: 'left',
                     }}
                   >
                     {column.render('Header')}
@@ -187,16 +211,12 @@ export default function PlaylistTracks() {
             {rows.map((row) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
+                <tr className={styles.row} {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
                       <td
+                        className={styles.tableDefinition}
                         {...cell.getCellProps()}
-                        style={{
-                          padding: '10px',
-                          background: '#121212',
-                          color: '#FFF',
-                        }}
                       >
                         {cell.render('Cell')}
                       </td>
