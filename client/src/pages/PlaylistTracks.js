@@ -110,19 +110,19 @@ export default function PlaylistTracks() {
         accessor: 'id',
       },
       {
-        Header: 'Title',
+        Header: 'TITLE',
         accessor: 'title',
       },
       {
-        Header: 'Artist',
+        Header: 'ARTIST',
         accessor: 'artist',
       },
       {
-        Header: 'Album',
+        Header: 'ALBUM',
         accessor: 'album.name',
       },
       {
-        Header: 'Duration',
+        Header: 'DURATION',
         accessor: 'duration',
       },
     ],
@@ -196,7 +196,7 @@ export default function PlaylistTracks() {
                     style={{
                       background: '#121212',
                       color: '#FFF',
-                      fontWeight: 'bold',
+                      fontWeight: 'normal',
                       padding: '10px',
                       textAlign: 'left',
                     }}
